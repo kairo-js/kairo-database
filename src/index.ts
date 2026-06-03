@@ -1,44 +1,34 @@
-import { Kairo, type KairoCommand, type KairoResponse } from "@kairo-js/router";
-import { DataVaultManager } from "./Kairo-DataVault/DataVaultManager";
+import { type KairoStartupBeforeEvent, router } from "@kairo-js/router";
+import { ScriptEventSource, system } from "@minecraft/server";
+import * as storage from "./database/DynamicPropertyStorage";
 import { properties } from "./properties";
 
-async function main(): Promise<void> {
-    Kairo.init(properties); // client
-}
+// Bootstrap listener: responds to kairo's session-request before worldLoad.
+// Must be set up at module load time so it is ready when kairo fires the request.
+system.afterEvents.scriptEventReceive.subscribe((ev) => {
+    if (ev.sourceType !== ScriptEventSource.Server) return;
+    if (ev.id !== "kairo:session-request") return;
 
-Kairo.onActivate = () => {
-    /**
-     * ここにアドオン有効化時の初期化処理を書く
-     * Write the initialization logic executed when the addon becomes active
-     */
-};
+    const raw = storage.load("kairo", "_kairo_session");
+    system.sendScriptEvent("kairo:session-response", raw !== undefined ? JSON.stringify(raw) : "");
+});
 
-Kairo.onDeactivate = () => {
-    /**
-     * ここにアドオン無効化時の終了処理を書く
-     * 基本的には初期化時の処理を無効化するように
-     * Write the shutdown/cleanup logic executed when the addon becomes deactive
-     * In principle, undo/disable what was done during initialization
-     */
-};
+router.init(properties);
 
-Kairo.onScriptEvent = async (command: KairoCommand): Promise<void | KairoResponse> => {
-    /**
-     * ここにはアドオンが scriptEvent を受け取った際の処理を書く
-     * 利用できるプロパティは { data: KairoCommand } のみ
-     * Write the handler logic for when the addon receives a scriptEvent
-     * The only available property is { data: KairoCommand }
-     */
-    return DataVaultManager.getInstance().handleScriptEvent(command);
-};
+router.beforeEvents.startup.subscribe((ev: KairoStartupBeforeEvent) => {
+    ev.api.register<{ key: string; value: unknown }, void>("save", ({ key, value }, ctx) => {
+        storage.save(ctx.callerAddonId, key, value);
+    });
 
-Kairo.onTick = () => {
-    /**
-     * 毎 tick 実行される処理を定義します。
-     * onActivate が呼ばれると有効化され、onDeactivate が呼ばれると無効化されます。
-     * Defines logic that is executed on every tick.
-     * It becomes active when onActivate is called and is disabled when onDeactivate is called.
-     */
-};
+    ev.api.register<{ key: string; addonId?: string }, unknown>("load", ({ key, addonId }, ctx) => {
+        return storage.load(addonId ?? ctx.callerAddonId, key);
+    });
 
-main();
+    ev.api.register<{ key: string }, void>("delete", ({ key }, ctx) => {
+        storage.remove(ctx.callerAddonId, key);
+    });
+
+    ev.api.register<{ key: string; addonId?: string }, boolean>("has", ({ key, addonId }, ctx) => {
+        return storage.has(addonId ?? ctx.callerAddonId, key);
+    });
+});

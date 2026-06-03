@@ -1,39 +1,29 @@
-import type { KairoAddonProperties } from "@kairo-js/router";
+import type { AddonProperties } from "@kairo-js/properties";
 
-export const properties: KairoAddonProperties = {
-    id: "kairo-datavault", //# // a-z & 0-9 - _
+export const properties: AddonProperties = {
+    id: "kairo-database",
     metadata: {
         authors: ["shizuku86"],
     },
     header: {
-        name: "Kairo DataVault",
+        name: "Kairo Database",
         description:
-            "It is a dedicated storage module, designed to be immutable and stable across all future versions of Minecraft.",
+            "Persistent data store for Kairo addons. Install once and never update — your data stays safe forever.",
         version: {
-            major: 1,
-            minor: 1,
+            major: 2,
+            minor: 0,
             patch: 0,
-            prerelease: "dev.1",
-            // build: "abc123",
+            prerelease: "beta.0",
         },
-        min_engine_version: [1, 21, 132],
+        min_engine_version: { major: 1, minor: 21, patch: 132 },
     },
-    dependencies: [
-        {
-            module_name: "@minecraft/server",
-            version: "2.4.0",
-        },
-        {
-            module_name: "@minecraft/server-ui",
-            version: "2.0.0",
-        },
+    minecraftDependencies: [
+        { module_name: "@minecraft/server", version: "2.7.0" },
+        { module_name: "@minecraft/server-ui", version: "2.0.0" },
     ],
-    /** 前提アドオン */
-    requiredAddons: {
-        /**
-         * id: version (string) // "kairo": "1.0.0"
-         */
-        kairo: "1.0.0-dev.1",
+    optionalDependencies: {},
+    dependencies: {
+        kairo: "^1.0.0",
     },
-    tags: [],
+    tags: ["official", "stable"],
 };

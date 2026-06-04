@@ -23,7 +23,7 @@ export const properties: AddonProperties = {
     ],
     optionalDependencies: {},
     dependencies: {
-        kairo: "^1.0.0",
+        kairo: "*",
     },
     tags: ["official", "stable"],
 };

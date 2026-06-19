@@ -1,6 +1,6 @@
 {
     "name": "kairo-database",
-    "version": "1.0.0-beta.0",
+    "version": "1.0.0-beta.3",
     "description": "**Stable Script API** - @minecraft/server - 2.7.0",
     "main": "index.js",
     "type": "module",

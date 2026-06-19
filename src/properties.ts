@@ -10,7 +10,7 @@ export const properties: AddonProperties = {
         description:
             "Persistent data store for Kairo addons. Install once and never update — your data stays safe forever.",
         version: {
-            major: 2,
+            major: 1,
             minor: 0,
             patch: 0,
             prerelease: "beta.0",
@@ -18,7 +18,7 @@ export const properties: AddonProperties = {
         min_engine_version: { major: 1, minor: 21, patch: 132 },
     },
     minecraftDependencies: [
-        { module_name: "@minecraft/server", version: "2.7.0" },
+        { module_name: "@minecraft/server", version: "2.0.0" },
         { module_name: "@minecraft/server-ui", version: "2.0.0" },
     ],
     optionalDependencies: {},

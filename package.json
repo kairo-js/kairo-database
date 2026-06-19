@@ -25,6 +25,6 @@
     },
     "dependencies": {
         "@kairo-js/properties": "1.2.1",
-        "@kairo-js/router": "1.0.0-beta.0"
+        "@kairo-js/router": "1.0.0-beta.1"
     }
 }

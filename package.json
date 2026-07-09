@@ -16,7 +16,7 @@
         "platform": "neutral"
     },
     "devDependencies": {
-        "@kairo-js/build-tools": "1.0.0-beta.2",
+        "@kairo-js/build-tools": "1.0.0-beta.3",
         "@minecraft/common": "^1.2.0",
         "@minecraft/server": "^2.7.0",
         "@minecraft/server-ui": "^2.0.0",

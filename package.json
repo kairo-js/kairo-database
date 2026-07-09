@@ -6,17 +6,17 @@
     "type": "module",
     "packageManager": "pnpm@10.31.0",
     "scripts": {
-        "clean": "rimraf BP/scripts",
-        "typecheck": "tsc --noEmit",
-        "build": "pnpm run clean && pnpm run typecheck && kairo-build bundle && pnpm run deploy",
-        "build:ci": "pnpm run clean && pnpm run typecheck && kairo-build bundle && kairo-build ci-prepare",
+        "clean": "kairo-build clean",
+        "typecheck": "kairo-build typecheck",
+        "build": "kairo-build build",
+        "build:ci": "kairo-build build-ci",
         "deploy": "kairo-build deploy"
     },
     "kairoBuild": {
         "platform": "neutral"
     },
     "devDependencies": {
-        "@kairo-js/build-tools": "1.0.0-beta.0",
+        "@kairo-js/build-tools": "1.0.0-beta.2",
         "@minecraft/common": "^1.2.0",
         "@minecraft/server": "^2.7.0",
         "@minecraft/server-ui": "^2.0.0",
